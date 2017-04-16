@@ -12,6 +12,7 @@ importScripts('./vendor/kv-keeper.js-1.0.4/kv-keeper.js');
 
 self.addEventListener('install', event => {
     const promise = preCacheAllFavorites()
+        .then(() => preCacheAllFiles())
         // Вопрос №1: зачем нужен этот вызов?
         .then(() => self.skipWaiting())
         .then(() => console.log('[ServiceWorker] Installed!'));
@@ -68,6 +69,24 @@ function preCacheAllFavorites() {
                     );
                 });
         });
+}
+
+// Положить в новый кеш все файлы
+function preCacheAllFiles() {
+    const files = [
+        "./assets/blocks.js",
+        "./assets/star.svg",
+        "./assets/style.css",
+        "./assets/templates.js",
+        "./vendor/bem-components-dist-5.0.0/touch-phone/bem-components.dev.css",
+        "./vendor/bem-components-dist-5.0.0/touch-phone/bem-components.dev.js",
+        "./vendor/kv-keeper.js-1.0.4/kv-keeper.js",
+        "./vendor/kv-keeper.js-1.0.4/kv-keeper.typedef.js",
+        "./gifs.html",
+        'https://yastatic.net/jquery/3.1.0/jquery.min.js'
+    ];
+    return caches.open(CACHE_VERSION)
+        .then(cache => cache.addAll(files));
 }
 
 // Извлечь из БД добавленные в избранное картинки
