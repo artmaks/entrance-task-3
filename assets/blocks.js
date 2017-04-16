@@ -466,7 +466,7 @@ modules.define('service-worker', ['i-bem'], function(provide, bem) {
             }
 
             this._serviceWorker
-                .register('./service-worker.js')
+                .register('./service-worker.js') // Так работает для встроенного в web-storm сервера
                 .then(function() {
                     console.log('[ServiceWorkerContainer] ServiceWorker is registered!');
                 })
